@@ -47,7 +47,7 @@
     D=M
     @SP                 // prod += multiplier
     A=M+1
-    M=M+D
+    M=D+M
     @Mult_L1
     0;JMP
     
@@ -133,7 +133,7 @@
     A=M-1
     A=A-1
     M=-M
-   
+
 (Divide_L1)
     @SP                 // stop when divisor > dividend
     A=M-1

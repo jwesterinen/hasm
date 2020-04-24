@@ -1,5 +1,5 @@
 /*
-// SymbolTable class implementation
+ * SymbolTable class implementation
  */
 
 #include "symbolTable.h"

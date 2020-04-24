@@ -1,9 +1,12 @@
 /*
-// code.cpp
+ * code.cpp
  */
 
 #include <iostream>
 #include "code.h"
+
+extern char *inputFileName;
+extern unsigned line;
 
 struct compConversion
 {
@@ -29,15 +32,21 @@ struct compConversion
 	{ "A-1", "0110010" },
 	{ "M-1", "1110010" },
 	{ "D+A", "0000010" },
+	{ "A+D", "0000010" },
 	{ "D+M", "1000010" },
+	{ "M+D", "1000010" },
 	{ "D-A", "0010011" },
 	{ "D-M", "1010011" },
 	{ "A-D", "0000111" },
 	{ "M-D", "1000111" },
 	{ "D&A", "0000000" },
+	{ "A&D", "0000000" },
 	{ "D&M", "1000000" },
+	{ "M&D", "1000000" },
 	{ "D|A", "0010101" },
-	{ "D|M", "1010101" }
+	{ "A|D", "0010101" },
+	{ "D|M", "1010101" },
+	{ "M|D", "1010101" }
 };
 int compTableSize = sizeof(compTable) / sizeof(compConversion);
 
@@ -107,7 +116,7 @@ const std::string& Code::Symbol(const std::string& symbol)
 }
 
 // return the binary field that corresponds to the symbolic comp portion of a D-instruction
-const std::string& Code::Comp(const std::string& comp) const
+const std::string& Code::Comp(const std::string& comp)
 {
 	for (int i = 0; i < compTableSize; i++)
 	{
@@ -115,12 +124,13 @@ const std::string& Code::Comp(const std::string& comp) const
 			return compTable[i].hack;
 	}
 
-    std::cout << "Unknown comp: " << comp << std::endl;
+    std::cout << inputFileName << ": unknown comp in line " << line << ": " << comp << std::endl;
+    errMsg = "*******";
 	return errMsg;
 }
 
 // return the binary field that corresponds to the symbolic dest portion of a D-instruction
-const std::string& Code::Dest(const std::string& dest) const
+const std::string& Code::Dest(const std::string& dest)
 {
 	for (int i = 0; i < destTableSize; i++)
 	{
@@ -128,12 +138,13 @@ const std::string& Code::Dest(const std::string& dest) const
 			return destTable[i].hack;
 	}
 
-    std::cout << "Unknown dest: " << dest << std::endl;
+    std::cout << inputFileName << ": unknown dest in line " << line << ": " << dest << std::endl;
+	errMsg = "***";
 	return errMsg;
 }
 
 // return the binary field that corresponds to the symbolic jump portion of a D-instruction
-const std::string& Code::Jump(const std::string& jump) const
+const std::string& Code::Jump(const std::string& jump)
 {
 	for (int i = 0; i < compTableSize; i++)
 	{
@@ -141,7 +152,8 @@ const std::string& Code::Jump(const std::string& jump) const
 			return jumpTable[i].hack;
 	}
 
-    std::cout << "Unknown jump: " << jump << std::endl;
+    std::cout << inputFileName << ": unknown jump in line " << line << ": " << jump << std::endl;
+	errMsg = "***";
 	return errMsg;
 }
 

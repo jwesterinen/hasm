@@ -27,7 +27,7 @@
     0;JMP
 (ClearDisplay_end)    
 
-// int Getsd()
+// int Getsd()&
 //   Convert the 3-digit display with sign to an integer and return it.
 //   Args: none
 //   Return: the value on the display
@@ -67,7 +67,7 @@
     @100
     D=A
     @retval
-    M=M+D
+    M=D+M
     @Getsd_d3
     M=M-1
     @Getsd_d3_loop
@@ -81,7 +81,7 @@
     @10
     D=A
     @retval
-    M=M+D
+    M=D+M
     @Getsd_d2
     M=M-1
     @Getsd_d2_loop
@@ -91,7 +91,7 @@
     @Getsd_d1           // add d1 to the result
     D=M
     @retval
-    M=M+D               // return the value in D
+    M=D+M               // return the value in D
 
 (Getsd_return)    
     @SP                 // return by popping the return address from the stack
@@ -223,7 +223,7 @@
     D=M
     @16386
     M=D
-        
+
     @Printsd_sign       // set the sign in d4 @ 0x4003
     D=M
     @16387

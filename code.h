@@ -1,5 +1,5 @@
 /*
-// Code class definition
+ * Code class definition
  */
 
 #pragma once
@@ -12,9 +12,9 @@ public:
 	Code();
 	~Code();
 	const std::string& Symbol(const std::string& symbol);
-	const std::string& Dest(const std::string& dest) const;
-	const std::string& Comp(const std::string& comp) const;
-	const std::string& Jump(const std::string& jump) const;
+	const std::string& Dest(const std::string& dest);
+	const std::string& Comp(const std::string& comp);
+	const std::string& Jump(const std::string& jump);
 
 private:
 	std::string symbolBin;

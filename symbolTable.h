@@ -1,5 +1,5 @@
 /*
-// SymbolTable class definition
+ * SymbolTable class definition
  */
 
 #pragma once

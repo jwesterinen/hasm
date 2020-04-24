@@ -1,5 +1,5 @@
 /*
-// Parser class definition
+ * Parser class definition
  */
 
 #pragma once

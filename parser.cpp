@@ -1,7 +1,11 @@
 /*
-// Parser class implementation
+ * Parser class implementation
  */
+
+#include <cctype> 
 #include "parser.h"
+
+extern unsigned line;
 
 Parser::Parser(std::ifstream& _inputFile) : inputFile(_inputFile)
 {
@@ -15,6 +19,7 @@ Parser::~Parser()
 bool Parser::HasMoreCommands()
 {
 	std::getline(inputFile, curInstr);
+	line++;
 	return !inputFile.eof();
 }
 
@@ -23,6 +28,7 @@ bool Parser::Advance()
 	while (curInstr == "    " || curInstr == "\t" || curInstr == "" || curInstr[0] == '/')
 	{
 		std::getline(inputFile, curInstr);
+		line++;
 		if (inputFile.eof())
 		    return false;
 	}
@@ -46,7 +52,7 @@ CmdType Parser::CommandType()
 	{
 		curInstr = curInstr.substr(pos);
 	}
-	if ((pos = curInstr.find_first_of(' ')) != std::string::npos)
+	if ((pos = curInstr.find_first_of(" \t")) != std::string::npos)
 	{
 		curInstr = curInstr.substr(0, pos);
 	}

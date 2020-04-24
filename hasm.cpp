@@ -1,5 +1,5 @@
 /*
-// Main control module for the HACK assembler
+ * Main control module for the HACK assembler
  */
 
 #include <iostream>
@@ -8,6 +8,10 @@
 #include "parser.h"
 #include "code.h"
 #include "symbolTable.h"
+
+// global input file name and line number for error reporting
+char *inputFileName;
+unsigned line;
 
 // return true if a string represents a number, else return false
 bool IsNumber(const std::string& s)
@@ -28,7 +32,8 @@ int main(int argc, char** argv)
 		return 1;
 
 	// open the input file
-	std::ifstream inputFile(argv[1]);
+	inputFileName = argv[1];
+	std::ifstream inputFile(inputFileName);
 	if (!inputFile.is_open())
 	{
 		std::cout << "hasm: cannot open file " << argv[1] << std::endl;
@@ -53,6 +58,7 @@ int main(int argc, char** argv)
 	std::string symbol;
 	int romAddr = 0;
 	int ramAddr = 16;
+	line = 0;
 	while (parser.HasMoreCommands())
 	{
 		if (!parser.Advance())
@@ -85,6 +91,7 @@ int main(int argc, char** argv)
 	inputFile.clear();
 	inputFile.seekg(0, inputFile.beg);
 	char symbolBuffer[80];
+	line = 0;
 	while (parser.HasMoreCommands())
 	{
 		if (!parser.Advance())

@@ -6,5 +6,4 @@ done
 ./hasm $1_temp.asm
 mv $1_temp.hack $1.hack
 rm $1_temp.asm
-cp $1.hack rom.hack
 

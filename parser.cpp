@@ -25,7 +25,7 @@ bool Parser::HasMoreCommands()
 
 bool Parser::Advance()
 {
-	while (curInstr == "    " || curInstr == "\t" || curInstr == "" || curInstr[0] == '/')
+	while (curInstr == "" || curInstr[0] == '/' || curInstr.find_first_not_of(" \t") == std::string::npos)
 	{
 		std::getline(inputFile, curInstr);
 		line++;
@@ -48,7 +48,7 @@ CmdType Parser::CommandType()
 	// <comment> ::= //<any text>
 
 	// strip off whitespace and in-line comments
-	if ((pos = curInstr.find_first_not_of(' ')) != std::string::npos)
+	if ((pos = curInstr.find_first_not_of(" \t")) != std::string::npos)
 	{
 		curInstr = curInstr.substr(pos);
 	}

@@ -59,10 +59,8 @@ int main(int argc, char** argv)
 	int romAddr = 0;
 	int ramAddr = 16;
 	line = 0;
-	while (parser.HasMoreCommands())
+	while (parser.HasMoreCommands() && parser.Advance())
 	{
-		if (!parser.Advance())
-		    break;
 		switch (parser.CommandType())
 		{
 			case A_COMMAND:
@@ -92,10 +90,8 @@ int main(int argc, char** argv)
 	inputFile.seekg(0, inputFile.beg);
 	char symbolBuffer[80];
 	line = 0;
-	while (parser.HasMoreCommands())
+	while (parser.HasMoreCommands() && parser.Advance())
 	{
-		if (!parser.Advance())
-		    break;
 		switch (parser.CommandType())
 		{
 			case A_COMMAND:

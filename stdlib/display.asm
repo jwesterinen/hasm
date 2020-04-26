@@ -27,7 +27,7 @@
     0;JMP
 (ClearDisplay_end)    
 
-// int Getsd()&
+// int Getsd()
 //   Convert the 3-digit display with sign to an integer and return it.
 //   Args: none
 //   Return: the value on the display
@@ -35,11 +35,11 @@
 //   Stack on entry:
 //     SP-> retaddr
 //
-//   The return value is written to the global variable "retval".
+//   The return value is written to the global variable "RETVAL".
 //
 
 (Getsd)
-    @retval             // init the result to 0
+    @RETVAL             // init the result to 0
     M=0
     
     @16384              // store the display digits
@@ -60,13 +60,13 @@
     M=D
     
 (Getsd_d3_loop)
-    @Getsd_d3           // add the number of 100's in d3 to the result, i.e. retval
+    @Getsd_d3           // add the number of 100's in d3 to the result, i.e. RETVAL
     D=M
     @Getsd_d2_loop
     D;JEQ
     @100
     D=A
-    @retval
+    @RETVAL
     M=D+M
     @Getsd_d3
     M=M-1
@@ -80,7 +80,7 @@
     D;JEQ
     @10
     D=A
-    @retval
+    @RETVAL
     M=D+M
     @Getsd_d2
     M=M-1
@@ -90,7 +90,7 @@
 (Getsd_d1_loop)
     @Getsd_d1           // add d1 to the result
     D=M
-    @retval
+    @RETVAL
     M=D+M               // return the value in D
 
 (Getsd_return)    

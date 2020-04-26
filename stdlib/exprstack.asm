@@ -27,12 +27,12 @@
     D=M-D
     @ExprPop_exit
     D;JLE
-    @EP                 // pop the top of the expr stack to retval
+    @EP                 // pop the top of the expr stack to RETVAL
     M=M-1
     A=M+1
     D=M
 (ExprPop_exit)
-    @retval             // write the result (or 0 for bottom of stack) to retval
+    @RETVAL             // write the result (or 0 for bottom of stack) to RETVAL
     M=D
     @SP                 // pop the return address from the stack and return
     M=M-1
@@ -41,10 +41,10 @@
     0;JMP
 
 (ExprTop)
-    @EP                 // copy the top of the expr stack to retval
+    @EP                 // copy the top of the expr stack to RETVAL
     A=M
     D=M
-    @retval
+    @RETVAL
     M=D
     @SP                 // pop the return address from the stack and return
     M=M-1

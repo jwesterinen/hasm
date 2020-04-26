@@ -61,10 +61,10 @@
     M=-M
     
 (Multiply_return)
-    @SP                 // store product into global retval
+    @SP                 // store product into global RETVAL
     A=M+1
     D=M
-    @retval
+    @RETVAL
     M=D
     @SP                 // pop the return address and return
     M=M-1
@@ -173,10 +173,10 @@
     M=-M    
 
 (Divide_return)    
-    @SP                 // store product into global retval
+    @SP                 // store product into global RETVAL
     A=M+1
     D=M
-    @retval
+    @RETVAL
     M=D
     @SP                 // pop the return address and return
     M=M-1

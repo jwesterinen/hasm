@@ -10,7 +10,7 @@
 //   Stack on entry:
 //     SP-> retaddr
 //
-//   The return value is written to the global variable "retval".
+//   The return value is written to the global variable "RETVAL".
 //
 
 (ReadKey)
@@ -18,7 +18,7 @@
     D=M
     @ReadKey
     D;JEQ       
-    @retval
+    @RETVAL
     M=D    
 
 (RK_GetKeyRelease)    

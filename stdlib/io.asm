@@ -177,9 +177,9 @@
 //     SP-> retaddr
 
 (GetGpio) 
-    @IODAT              // put the GPIO value into global retval
+    @IODAT              // put the GPIO value into global RETVAL
     D=M
-    @retval
+    @RETVAL
     M=D
 (GetGpio_return)    
     @SP                 // pop the return address and return

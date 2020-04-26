@@ -40,13 +40,27 @@ CmdType Parser::CommandType()
 	size_t pos;
 
 	// parse each instruction:
-	// <hasm program> ::= <instruction>+
-	// <instruction> ::= <A-instruction> | <D-instruction> | <L-instruction> | <comment>
-	// <A-instruction> ::= @<symbol>
-	// <D-instruction> ::= [<dest>=]<comp>[;<jump>]
-	// <L-instruction> ::= (<symbol>)
-	// <comment> ::= //<any text>
+	// <hasm program>   ::= <instruction>+
+	// <instruction>    ::= <A-instruction> | <D-instruction> | <L-instruction> | <comment> | <equate>
+	// <A-instruction>  ::= @<symbol>
+	// <D-instruction>  ::= [<dest>=]<comp>[;<jump>]
+	// <L-instruction>  ::= (<symbol>)
+	// <comment>        ::= //<any text>
+	// <equate>         ::= <symbol> equ <value>
 
+    // check for equ
+	if ((pos = curInstr.find("equ")) != std::string::npos)
+	{
+        char symbuf[80];
+        
+	    // equate so parse into symbol and value
+        sscanf(curInstr.c_str(), "%s\tequ\t%d", symbuf, &equValue);
+        symbol = symbuf;
+        
+		curInstr.clear();
+		return E_COMMAND;
+	}
+	
 	// strip off whitespace and in-line comments
 	if ((pos = curInstr.find_first_not_of(" \t")) != std::string::npos)
 	{
@@ -57,6 +71,7 @@ CmdType Parser::CommandType()
 		curInstr = curInstr.substr(0, pos);
 	}
 
+    // return the command type
 	symbol.clear();
 	if ((pos = curInstr.find("@")) != std::string::npos)
 	{
@@ -108,3 +123,7 @@ CmdType Parser::CommandType()
 		return C_COMMAND;
 	}
 }
+
+
+// end of parser.cpp
+

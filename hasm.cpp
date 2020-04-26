@@ -79,6 +79,18 @@ int main(int argc, char** argv)
 				}
 				break;
 
+			case E_COMMAND:
+				symbol = parser.Symbol();
+				if (!symbolTable.Contains(symbol))
+				{
+					symbolTable.AddEntry(symbol, parser.EquValue());
+				}
+				else
+				{
+				    std::cout << "Duplicate equ" << symbol << std::endl;
+				}
+				break;
+
 			default:
 				std::cout << "Unimplemented instruction (pass 1)" << std::endl;
 				break;
@@ -121,7 +133,9 @@ int main(int argc, char** argv)
 				outputFile << "111" << code.Comp(parser.Comp()) << code.Dest(parser.Dest()) << code.Jump(parser.Jump()) << std::endl;
 				break;
 
+            // labels and equates are only used in the first pass so ignore them in the second pass
 			case L_COMMAND:
+			case E_COMMAND:
 				break;
 
 			default:
@@ -132,4 +146,8 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+
+// end of hasm.cpp
+
     

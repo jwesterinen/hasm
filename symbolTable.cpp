@@ -11,9 +11,9 @@ struct predefinedSymbol
 	int address;
 } predefinedSymbolTable[] = {
 	{ "SP",         0},
-	{ "LCL",        1},
-	{ "ARG",        2},
-	{ "THIS",       3},
+	{ "BP",         1},
+	{ "EP",         2},
+	{ "RETVAL",     3},
 	{ "THAT",       4},
 	{ "R0",         0},
 	{ "R1",         1},
@@ -32,7 +32,10 @@ struct predefinedSymbol
 	{ "R14",       14},
 	{ "R15",       15},
 	{ "SCREEN", 16384},
-	{ "KBD",    24576}
+	{ "KBD",    24576},
+	{ "LED",    28672},
+	{ "IODAT",  28673},
+	{ "IODIR",  28674}
 };
 int predefinedSymbolTableSize = sizeof(predefinedSymbolTable) / sizeof(predefinedSymbol);
 
@@ -66,3 +69,7 @@ int SymbolTable::GetAddress(const std::string& symbol)
 {
 	return symbolTable[symbol];
 }
+
+
+// end of symbolTable.cpp
+

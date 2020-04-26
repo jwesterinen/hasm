@@ -12,7 +12,7 @@
     @SP                 // write the state value to the LED
     A=M-1
     D=M 
-    @28672
+    @LED
     M=D
 (SetLed_return)    
     @SP
@@ -22,7 +22,7 @@
     0;JMP
 (SetLed_end)    
 
-
+// FIXME: update to new ABI
 // void FlashLed(number, duration)
 //   Flash the LED the given number of times at the given duration.
 //   Args:
@@ -132,7 +132,7 @@
     @SP                 // write the direction value of the GPIO pin
     A=M-1
     D=M 
-    @28674
+    @IODIR
     M=D
 (SetGpioDir_return)    
     @SP
@@ -157,7 +157,7 @@
     @SP                 // write the state value to the LED
     A=M-1
     D=M 
-    @28673
+    @IODAT
     M=D
 (SetGpio_return)    
     @SP
@@ -177,7 +177,7 @@
 //     SP-> retaddr
 
 (GetGpio) 
-    @28673              // put the GPIO value into global retval
+    @IODAT              // put the GPIO value into global retval
     D=M
     @retval
     M=D

@@ -20,3 +20,7 @@ private:
 	std::string symbolBin;
 	std::string errMsg;
 };
+
+
+// end of code.h
+

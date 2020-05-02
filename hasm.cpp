@@ -5,13 +5,65 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <getopt.h>
+#include <list>
 #include "parser.h"
 #include "code.h"
 #include "symbolTable.h"
 
+#define DEFAULT_LIB_PATH "/usr/local/lib"
+#define STDLIB_NAME "hack_stdlib.ho"
+
 // global input file name and line number for error reporting
 char *inputFileName;
 unsigned line;
+
+// command line options
+std::string stdlibPath(DEFAULT_LIB_PATH);
+std::list<std::string> inputFileNames;
+std::string outputFileName;
+bool verbose = false;
+
+static void ParseOptions(int argc, char* argv[])
+{
+	const char* optStr = "L:o:vh";
+	int opt;
+
+	while ((opt = getopt(argc, argv, optStr)) != -1)
+	{
+		switch (opt)
+		{
+		    // cpp options, just pass thru
+			case 'L':
+				stdlibPath = optarg;
+				break;
+			case 'o':
+				outputFileName = optarg;
+				break;
+			case 'v':
+				verbose = true;
+				break;
+			case 'h':
+				printf("usage: hasm [-L <stdlib path>] [-o <filename>] [-v] [-h] <hasm files>\n");
+				printf("\n");
+				printf("     options:\n");
+				printf("         -L <filename>: set the standard library path\n");
+				printf("         -o <filename>: set the output file name\n");
+				printf("         -v:            set verbose mode\n");
+				printf("         -h:            display this help\n");
+				exit(0);
+			default:
+				printf("usage: hasm [-L <stdlib path>] [-o <filename>] [-v] [-h] <hasm files>\n");
+				exit(-1);
+		}
+	}
+	
+	// input files follow the first non-option cmd line arg
+	while (optind < argc)
+	{
+	    inputFileNames.push_back(argv[optind++]);
+	}
+}
 
 // return true if a string represents a number, else return false
 bool IsNumber(const std::string& s)
@@ -31,26 +83,50 @@ int main(int argc, char** argv)
 	if (argc < 2)
 		return 1;
 
-	// open the input file
-	inputFileName = argv[1];
-	std::ifstream inputFile(inputFileName);
-	if (!inputFile.is_open())
+    ParseOptions(argc, argv);
+    
+    // open and concatenate the input files
+    std::stringstream srcBuffer;
+	for (std::list<std::string>::iterator it=inputFileNames.begin() ; it != inputFileNames.end(); ++it)
 	{
-		std::cout << "hasm: cannot open file " << argv[1] << std::endl;
-	}
-
+	    std::ifstream inputFile(*it);
+	    if (!inputFile.is_open())
+	    {
+		    std::cout << "hasm: cannot open file " << *it << std::endl;
+		    exit(1);
+	    }
+        srcBuffer << inputFile.rdbuf();
+    }
+    
+    // append the standard library file to the input files
+    std::string stdlibName(STDLIB_NAME);
+    stdlibName = stdlibPath + "/" + stdlibName;
+    std::ifstream stdlibFile(stdlibName);
+    if (!stdlibFile.is_open())
+    {
+	    std::cout << "hasm: cannot open file " << stdlibName << std::endl;
+		exit(1);
+    }
+    srcBuffer << stdlibFile.rdbuf();
+    
 	// create the output file
-	size_t pos = 0;
-	std::string delimiter(".");
-	std::string outfileName(argv[1]);
-	if ((pos = outfileName.find_last_of(delimiter)) != std::string::npos)
+	if (outputFileName.empty())
 	{
-		outfileName = outfileName.substr(0, pos) + ".hack";
+        size_t pos = 0;
+	    outputFileName = inputFileNames.front();
+        if ((pos = outputFileName.find_last_of(".")) != std::string::npos)
+        {
+            outputFileName = outputFileName.substr(0, pos) + ".hack";
+        }
+        else
+        {
+            outputFileName += ".hack";
+        }
 	}
-	std::ofstream outputFile(outfileName);
+	std::ofstream outputFile(outputFileName);
 
 	// init the parser and code generator
-	Parser parser(inputFile);
+	Parser parser(srcBuffer);
 	Code code;
 	SymbolTable symbolTable;
 
@@ -98,8 +174,10 @@ int main(int argc, char** argv)
 	}
 
 	// pass 2 -- convert assembly file to hack file line by line
-	inputFile.clear();
-	inputFile.seekg(0, inputFile.beg);
+	//inputFile.clear();
+	//inputFile.seekg(0, inputFile.beg);
+	srcBuffer.clear();
+	srcBuffer.seekg(0, srcBuffer.beg);
 	char symbolBuffer[80];
 	line = 0;
 	while (parser.HasMoreCommands() && parser.Advance())

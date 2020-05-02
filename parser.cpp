@@ -7,7 +7,8 @@
 
 extern unsigned line;
 
-Parser::Parser(std::ifstream& _inputFile) : inputFile(_inputFile)
+//Parser::Parser(std::ifstream& _srcBuffer) : srcBuffer(_srcBuffer)
+Parser::Parser(std::stringstream& _srcBuffer) : srcBuffer(_srcBuffer)
 {
 }
 
@@ -18,18 +19,18 @@ Parser::~Parser()
 // returns whether there are more instructions in the input
 bool Parser::HasMoreCommands()
 {
-	std::getline(inputFile, curInstr);
+	std::getline(srcBuffer, curInstr);
 	line++;
-	return !inputFile.eof();
+	return !srcBuffer.eof();
 }
 
 bool Parser::Advance()
 {
 	while (curInstr == "" || curInstr[0] == '/' || curInstr.find_first_not_of(" \t") == std::string::npos)
 	{
-		std::getline(inputFile, curInstr);
+		std::getline(srcBuffer, curInstr);
 		line++;
-		if (inputFile.eof())
+		if (srcBuffer.eof())
 		    return false;
 	}
 	return true;

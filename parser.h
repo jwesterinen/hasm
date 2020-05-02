@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 enum CmdType{A_COMMAND, C_COMMAND, L_COMMAND, E_COMMAND};
@@ -13,7 +14,8 @@ enum CmdType{A_COMMAND, C_COMMAND, L_COMMAND, E_COMMAND};
 class Parser
 {
 public:
-	Parser(std::ifstream& _inputFile);
+	//Parser(std::ifstream& _inputFile);
+    Parser(std::stringstream& _srcBuffer);
 	~Parser();
 	bool HasMoreCommands();
 	bool Advance();
@@ -40,7 +42,8 @@ public:
 	}
 
 private:
-	std::ifstream& inputFile;
+	//std::ifstream& inputFile;
+	std::stringstream& srcBuffer;
 	std::string curInstr;
 	std::string symbol, dest, comp, jump;
 	int equValue;

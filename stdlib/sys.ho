@@ -16,11 +16,13 @@
     D=A
     @SP
     M=D
-    @512                // init the expression stack pointer
+    @BP                 // init the base pointer
+    M=0
+    @512                // init the global base
     D=A
-    @BP
+    @GLB
     M=D
-    @768                // init the base pointer
+    @768                // init the expression stack pointer
     D=A
     @EP
     M=D

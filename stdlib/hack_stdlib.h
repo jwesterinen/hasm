@@ -3,20 +3,20 @@
  */
 
 void ResetSys();
-void DelayMs(ms);
-int Multiply(multiplier, multiplicand);
-int Divide(dividend, divisor);
+void DelayMs(int ms);
+int Multiply(int multiplier, int multiplicand);
+int Divide(int dividend, int divisor);
 int ReadKey();
-void SetLed(state);
-void SetGpioDir(dir);
-void SetGpio(state);
+void SetLed(int state);
+void SetGpioDir(int dir);
+void SetGpio(int state);
 int GetGpio();
-void ExprPush(expr);
+void ExprPush(int expr);
 int ExprPop();
 int ExprTop();
-void ExprPut(expr);
+void ExprPut(int expr);
 void ClearDisplay();
 int Getsd();
-void Printsd(value);
-void AppendNum3(value);
+void Printsd(int value);
+void AppendNum3(int value);
 

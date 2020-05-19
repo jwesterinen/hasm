@@ -14,7 +14,7 @@ struct predefinedSymbol
 	{ "BP",         1},
 	{ "EP",         2},
 	{ "RETVAL",     3},
-	{ "THAT",       4},
+	{ "GLB",        4},
 	{ "R0",         0},
 	{ "R1",         1},
 	{ "R2",         2},

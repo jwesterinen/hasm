@@ -1,7 +1,7 @@
 TARGET = hack_stdlib.ho
 HEADER = hack_stdlib.h
 
-DEPS = display.ho exprstack.ho io.ho keyboard.ho math.ho sys.ho
+DEPS = keyboard.ho display.ho io.ho math.ho sys.ho
 
 all: $(TARGET)
 

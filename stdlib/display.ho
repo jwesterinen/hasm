@@ -230,8 +230,8 @@
     M=D
 
 (Printsd_return)    
-    @SP
-    M=M-1               // pop the return address from the stack and return
+    @SP                 // pop the return address from the stack and return
+    M=M-1
     A=M+1
     A=M
     0;JMP

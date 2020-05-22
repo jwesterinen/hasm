@@ -14,7 +14,7 @@
 //
 
 (ReadKey)
-    @KBD                // get the RE_value from the kbd buffer when it becomes non-zero
+    @KBD                // get the keycode value from the kbd buffer when it becomes non-zero
     D=M
     @ReadKey
     D;JEQ       
@@ -22,7 +22,7 @@
     M=D    
 
 (RK_GetKeyRelease)    
-    @KBD                // wait for RE_value to become 0 then return the key value
+    @KBD                // wait for keycode value to become 0 then return the key value
     D=M
     @RK_GetKeyRelease
     D;JNE

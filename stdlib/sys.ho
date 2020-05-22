@@ -22,10 +22,6 @@
     D=A
     @GLB
     M=D
-    @768                // init the expression stack pointer
-    D=A
-    @EP
-    M=D
 (ResetSys_return)
     @SP                 // pop the return address from the stack and return
     M=M-1
@@ -35,7 +31,7 @@
 (ResetSys_end)
 
 
-// void DelayMs(ms)
+// void DelayMs(int ms)
 //   Delay the given number of mSec.
 //   Args:
 //     ms: the number of mSec to delay

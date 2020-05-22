@@ -9,6 +9,7 @@
 //     multiplicand: number to add to itself multiplier times
 //     multiplier: number of times multiplicand is added to itself
 //   Return: product
+//           Note: the return value is stored at global location, RETVAL
 //
 //   Stack on entry:
 //          product         (SP+1)
@@ -17,8 +18,7 @@
 //          multiplicand    (SP-2)
 
 (Multiply)
-    @SP                 // init product
-    A=M+1
+    @RETVAL             // init product
     M=0
     
     @Mult_negate_prod   // init negate product flag to false
@@ -45,8 +45,7 @@
     M=M-1               // decrement multiplier, i.e. number of times to add multiplicand to itself
     A=A-1
     D=M
-    @SP                 // prod += multiplier
-    A=M+1
+    @RETVAL             // prod += multiplier
     M=D+M
     @Mult_L1
     0;JMP
@@ -56,16 +55,10 @@
     D=M
     @Multiply_return
     D;JEQ
-    @SP
-    A=M+1
+    @RETVAL
     M=-M
     
 (Multiply_return)
-    @SP                 // store product into global RETVAL
-    A=M+1
-    D=M
-    @RETVAL
-    M=D
     @SP                 // pop the return address and return
     M=M-1
     A=M+1
@@ -80,16 +73,15 @@
 //     dividend: the number divided by the divisor
 //     divisor: the number with which to divide the dividend
 //   Return: quotient
+//           Note: the return value is stored at global location, RETVAL
 //
 //   Stack on entry:
-//          quotient    (SP+1)
 //     SP-> retaddr
 //          divisor     (SP-1)
 //          dividend    (SP-2)
 
 (Divide)
-    @SP                 // init quotient
-    A=M+1
+    @RETVAL             // init quotient
     M=0
     
     @SP                 // check for divide by zero
@@ -99,8 +91,7 @@
     D;JNE
     @1000               // if so set quotient to out of range number (1000)
     D=A
-    @SP
-    A=M+1
+    @RETVAL
     M=D
     @Divide_return
     0;JMP
@@ -148,8 +139,7 @@
     D=M                 // divisor in D
     A=A-1               // dividend in M
     M=M-D               // reduce dividend by divisor
-    @SP
-    A=M+1
+    @RETVAL
     M=M+1    
     @Divide_L1
     0;JMP
@@ -168,16 +158,10 @@
     @Divide_return
     D;JEQ
 (Div_negate)
-    @SP
-    A=M+1
+    @RETVAL
     M=-M    
 
 (Divide_return)    
-    @SP                 // store product into global RETVAL
-    A=M+1
-    D=M
-    @RETVAL
-    M=D
     @SP                 // pop the return address and return
     M=M-1
     A=M+1

@@ -59,10 +59,18 @@ struct destConversion
 	{ "M",   "001" },
 	{ "D",   "010" },
 	{ "MD",  "011" },
+	{ "DM",  "011" },
 	{ "A",   "100" },
 	{ "AM",  "101" },
+	{ "MA",  "101" },
 	{ "AD",  "110" },
-	{ "AMD", "111" }
+	{ "DA",  "110" },
+	{ "AMD", "111" },
+	{ "ADM", "111" },
+	{ "MAD", "111" },
+	{ "MDA", "111" },
+	{ "DAM", "111" },
+	{ "DMA", "111" }
 };
 int destTableSize = sizeof(destTable) / sizeof(destConversion);
 

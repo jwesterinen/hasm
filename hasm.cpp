@@ -22,11 +22,12 @@ unsigned line;
 std::string stdlibPath(DEFAULT_LIB_PATH);
 std::list<std::string> inputFileNames;
 std::string outputFileName;
+bool nostdlib = false;
 bool verbose = false;
 
 static void ParseOptions(int argc, char* argv[])
 {
-	const char* optStr = "L:o:vh";
+	const char* optStr = "L:o:nvh";
 	int opt;
 
 	while ((opt = getopt(argc, argv, optStr)) != -1)
@@ -40,20 +41,24 @@ static void ParseOptions(int argc, char* argv[])
 			case 'o':
 				outputFileName = optarg;
 				break;
+			case 'n':
+				nostdlib = true;
+				break;
 			case 'v':
 				verbose = true;
 				break;
 			case 'h':
-				printf("usage: hasm [-L <stdlib path>] [-o <filename>] [-v] [-h] <hasm files>\n");
+				printf("usage: hasm [-L <stdlib path>] [-o <filename>] [-n] [-v] [-h] <hasm files>\n");
 				printf("\n");
 				printf("     options:\n");
 				printf("         -L <filename>: set the standard library path\n");
 				printf("         -o <filename>: set the output file name\n");
+				printf("         -n:            no standard library\n");
 				printf("         -v:            set verbose mode\n");
 				printf("         -h:            display this help\n");
 				exit(0);
 			default:
-				printf("usage: hasm [-L <stdlib path>] [-o <filename>] [-v] [-h] <hasm files>\n");
+				printf("usage: hasm [-L <stdlib path>] [-o <filename>] [-n] [-v] [-h] <hasm files>\n");
 				exit(-1);
 		}
 	}
@@ -99,15 +104,18 @@ int main(int argc, char** argv)
     }
     
     // append the standard library file to the input files
-    std::string stdlibName(STDLIB_NAME);
-    stdlibName = stdlibPath + "/" + stdlibName;
-    std::ifstream stdlibFile(stdlibName);
-    if (!stdlibFile.is_open())
+    if (!nostdlib)
     {
-	    std::cout << "hasm: cannot open file " << stdlibName << std::endl;
-		exit(1);
+        std::string stdlibName(STDLIB_NAME);
+        stdlibName = stdlibPath + "/" + stdlibName;
+        std::ifstream stdlibFile(stdlibName);
+        if (!stdlibFile.is_open())
+        {
+	        std::cout << "hasm: cannot open file " << stdlibName << std::endl;
+		    exit(1);
+        }
+        srcBuffer << stdlibFile.rdbuf();
     }
-    srcBuffer << stdlibFile.rdbuf();
     
 	// create the output file
 	if (outputFileName.empty())

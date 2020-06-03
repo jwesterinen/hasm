@@ -14,9 +14,20 @@
 //
 
 (ReadKey)
+    @RETVAL             // clear keycode
+    M=0
+    @50                 // init the timeout counter
+    D=A
+    @RK_counter
+    M=D
+(ReadKeyLoop) 
+    @RK_counter         // decrement the timeout counter and return when it counts down to zero
+    MD=M-1
+    @RK_Return
+    D;JEQ   
     @KBD                // get the keycode value from the kbd buffer when it becomes non-zero
     D=M
-    @ReadKey
+    @ReadKeyLoop
     D;JEQ       
     @RETVAL
     M=D    
